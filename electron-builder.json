@@ -1,0 +1,17 @@
+{
+  "appId": "com.publisherpro.app",
+  "productName": "GitHub Project Publisher Pro",
+  "directories": {
+    "output": "dist-packaged"
+  },
+  "files": [
+    "dist/**/*",
+    "node_modules/**/*",
+    "node_modules/.prisma/**/*",
+    "package.json"
+  ],
+  "win": {
+    "target": "portable"
+  },
+  "asar": true
+}
