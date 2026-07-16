@@ -1,0 +1,99 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String
+  email     String
+  avatar    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GithubAccount {
+  id             String   @id @default(uuid())
+  userId         String?
+  username       String
+  displayName    String?
+  avatar         String?
+  encryptedToken String
+  defaultAccount Boolean  @default(false)
+  lastLogin      DateTime @default(now())
+}
+
+model Project {
+  id             String   @id @default(uuid())
+  name           String
+  folderPath     String   @unique
+  language       String
+  framework      String
+  size           Int
+  gitInitialized Boolean  @default(false)
+  repositoryId   String?
+  lastOpened     DateTime @default(now())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Repository {
+  id             String   @id @default(uuid())
+  githubId       Int?
+  repositoryName String
+  visibility     String
+  url            String
+  defaultBranch  String   @default("main")
+  createdAt      DateTime @default(now())
+}
+
+model UploadHistory {
+  id            String    @id @default(uuid())
+  projectId     String
+  status        String
+  startedAt     DateTime  @default(now())
+  completedAt   DateTime?
+  commitHash    String?
+  repositoryUrl String?
+  errorMessage  String?
+}
+
+model RunHistory {
+  id        String   @id @default(uuid())
+  projectId String
+  command   String
+  exitCode  Int?
+  duration  Int
+  logs      String
+  createdAt DateTime @default(now())
+}
+
+model ApplicationSettings {
+  id                  String   @id @default("default")
+  theme               String   @default("dark")
+  defaultGithubAccount String?
+  defaultVisibility   String   @default("private")
+  autoCommit          Boolean  @default(false)
+  autoPush            Boolean  @default(false)
+  autoPull            Boolean  @default(false)
+  uploadConcurrency   Int      @default(3)
+  checkUpdates        Boolean  @default(true)
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String
+  details   String
+  timestamp DateTime @default(now())
+}
+
+model ErrorLog {
+  id        String   @id @default(uuid())
+  error     String
+  stack     String?
+  timestamp DateTime @default(now())
+}
